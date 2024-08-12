@@ -1,5 +1,5 @@
 {% set name = "sqlglot" %}
-{% set version = "18.17.0" %}
+{% set version = "25.10.0" %}
 
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/sqlglot-{{ version }}.tar.gz
-  sha256: a64c99d0f512cff05c742b42b2f115327a56d4552ddde821b9158e94da782e36
+  sha256: 131d47163696228201224504e5a8c9f189134e9acece4c6336bb8534bd08b906
 
 build:
   skip: true  # [py<37]
@@ -37,9 +37,9 @@ about:
   home: https://github.com/tobymao/sqlglot
   summary: An easily customizable SQL parser and transpiler
   description: |
-    SQLGlot is a no-dependency SQL parser, transpiler, optimizer, and engine. It can be used 
-    to format SQL or translate between 19 different dialects like DuckDB, Presto, Spark, 
-    Snowflake, and BigQuery. It aims to read a wide variety of SQL inputs and output 
+    SQLGlot is a no-dependency SQL parser, transpiler, optimizer, and engine. It can be used
+    to format SQL or translate between 19 different dialects like DuckDB, Presto, Spark,
+    Snowflake, and BigQuery. It aims to read a wide variety of SQL inputs and output
     syntactically correct SQL in the targeted dialects.
   license: MIT
   license_family: MIT
