@@ -1,5 +1,5 @@
 {% set name = "sqlglot" %}
-{% set version = "25.10.0" %}
+{% set version = "26.3.8" %}
 
 
 package:
@@ -8,14 +8,19 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/sqlglot-{{ version }}.tar.gz
-  sha256: 131d47163696228201224504e5a8c9f189134e9acece4c6336bb8534bd08b906
+  sha256: 225a3645f1fbff3cdb4bf5ef8c8aea867ddc79b567fc5bc5fd21811875c7099a
+  patches:
+    - patches/0001-Fix-use-utf-8-encoding-in-open-calls-fixes-4676.patch
 
 build:
-  skip: true  # [py<37]
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vvv
+  skip: true  # [py<37]
 
 requirements:
+  build:
+    - patch  # [not win]
+    - m2-patch  # [win]
   host:
     - pip
     - python
@@ -25,13 +30,22 @@ requirements:
   run:
     - python
 
+# duckdb >=0.6 * does not exist (perhaps a typo or a missing channel).
+{% set ignore_tests = " --ignore=tests/test_optimizer.py" %}
+{% set ignore_tests = ignore_tests + " --ignore=tests/test_executor.py" %}
+
 test:
+  source_files:
+    - tests
   imports:
     - sqlglot
   commands:
     - pip check
+    - pytest -v {{ ignore_tests }} tests
   requires:
     - pip
+    - pytest
+    - pytz
 
 about:
   home: https://github.com/tobymao/sqlglot
@@ -43,7 +57,9 @@ about:
     syntactically correct SQL in the targeted dialects.
   license: MIT
   license_family: MIT
-  license_file: LICENSE
+  license_file:
+    - LICENSE
+    - tests/fixtures/jsonpath/LICENSE # BSD-2-Clause
   dev_url: https://github.com/tobymao/sqlglot
   doc_url: https://github.com/tobymao/sqlglot/blob/main/README.md
 

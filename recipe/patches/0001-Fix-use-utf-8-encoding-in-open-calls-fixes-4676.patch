@@ -1,0 +1,57 @@
+From 0920f778b2d94d94f3c8cccf280a87a6a14b12f7 Mon Sep 17 00:00:00 2001
+From: George Sittas <giwrgos.sittas@gmail.com>
+Date: Wed, 29 Jan 2025 16:43:35 +0200
+Subject: [PATCH] Fix: use utf-8 encoding in open calls, fixes #4676
+
+---
+ setup.py               | 2 +-
+ tests/gen_fixtures.py  | 4 ++--
+ tests/test_jsonpath.py | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/setup.py b/setup.py
+index 5db07cb5..b23a1b47 100644
+--- a/setup.py
++++ b/setup.py
+@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
+ 
+ 
+ def sqlglotrs_version():
+-    with open("sqlglotrs/Cargo.toml") as fd:
++    with open("sqlglotrs/Cargo.toml", encoding="utf-8") as fd:
+         for line in fd.readlines():
+             if line.strip().startswith("version"):
+                 return line.split("=")[1].strip().strip('"')
+diff --git a/tests/gen_fixtures.py b/tests/gen_fixtures.py
+index 7538b879..19e784e4 100644
+--- a/tests/gen_fixtures.py
++++ b/tests/gen_fixtures.py
+@@ -556,10 +556,10 @@ TPCDS_SCHEMA = {
+ 
+ 
+ def rewrite_fixtures(in_path, out_path, schema, num, kind):
+-    with open(out_path, "w", encoding="UTF-8") as fixture:
++    with open(out_path, "w", encoding="utf-8") as fixture:
+         for i in range(num):
+             i = i + 1
+-            with open(in_path.format(i=i), encoding="UTF-8") as file:
++            with open(in_path.format(i=i), encoding="utf-8") as file:
+                 original = "\n".join(
+                     line.rstrip()
+                     for line in file.read().split(";")[0].split("\n")
+diff --git a/tests/test_jsonpath.py b/tests/test_jsonpath.py
+index c939c523..e3b8d8f2 100644
+--- a/tests/test_jsonpath.py
++++ b/tests/test_jsonpath.py
+@@ -40,7 +40,7 @@ class TestJsonpath(unittest.TestCase):
+                 self.assertEqual(parse(selector).sql(), f"'{expected}'")
+ 
+     def test_cts_file(self):
+-        with open(os.path.join(FIXTURES_DIR, "jsonpath", "cts.json")) as file:
++        with open(os.path.join(FIXTURES_DIR, "jsonpath", "cts.json"), encoding="utf-8") as file:
+             tests = json.load(file)["tests"]
+ 
+         # sqlglot json path generator rewrites to a normal form
+-- 
+2.39.3 (Apple Git-146)
+
