@@ -9,6 +9,8 @@ package:
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/sqlglot-{{ version }}.tar.gz
   sha256: 225a3645f1fbff3cdb4bf5ef8c8aea867ddc79b567fc5bc5fd21811875c7099a
+  patches:
+    - patches/0001-Fix-use-utf-8-encoding-in-open-calls-fixes-4676.patch
 
 build:
   number: 0
@@ -16,6 +18,9 @@ build:
   skip: true  # [py<37]
 
 requirements:
+  build:
+    - patch  # [not win]
+    - m2-patch  # [win
   host:
     - pip
     - python
@@ -29,11 +34,6 @@ requirements:
 {% set ignore_tests = " --ignore=tests/test_optimizer.py" %}
 {% set ignore_tests = ignore_tests + " --ignore=tests/test_executor.py" %}
 
-# def decode(self, input, final=False):
-#   return codecs.charmap_decode(input,self.errors,decoding_table)[0]
-#   UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 51771: character maps to <undefined>
-#     ..\_test_env\lib\encodings\cp1252.py:23: UnicodeDecodeError
-{% set tests_to_skip = "test_cts_file" %}  # [win]
 test:
   source_files:
     - tests
