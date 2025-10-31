@@ -27,16 +27,35 @@ requirements:
   run_constrained:
     - sqlglotrs ==0.7.3
 
-# duckdb >=0.6 * does not exist (perhaps a typo or a missing channel).
 test:
   source_files:
     - tests
   imports:
     - sqlglot
+    - sqlglot._typing
+    - sqlglot._version
+    - sqlglot.dialects
+    - sqlglot.diff
+    - sqlglot.errors
+    - sqlglot.executor
+    - sqlglot.expressions
+    - sqlglot.generator
+    - sqlglot.helper
+    - sqlglot.jsonpath
+    - sqlglot.lineage
+    - sqlglot.optimizer
+    - sqlglot.parser
+    - sqlglot.planner
+    - sqlglot.schema
+    - sqlglot.serde
+    - sqlglot.time
+    - sqlglot.tokens
+    - sqlglot.transforms
+    - sqlglot.trie
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -v {{ ignore_tests }} tests
+    - pytest -ra -vv {{ ignore_tests }} tests
   requires:
     - pip
     - pytest
