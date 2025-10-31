@@ -1,54 +1,68 @@
 {% set name = "sqlglot" %}
-{% set version = "26.3.8" %}
-
+{% set version = "27.29.0" %}
+{% set ignore_tests = " --ignore=tests/test_optimizer.py" %}
+{% set ignore_tests = ignore_tests + " --ignore=tests/test_executor.py" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/sqlglot-{{ version }}.tar.gz
-  sha256: 225a3645f1fbff3cdb4bf5ef8c8aea867ddc79b567fc5bc5fd21811875c7099a
-  patches:
-    - patches/0001-Fix-use-utf-8-encoding-in-open-calls-fixes-4676.patch
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 2270899694663acef94fa93497971837e6fadd712f4a98b32aee1e980bc82722
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vvv
-  skip: true  # [py<37]
+  skip: true  # [py<39]
 
 requirements:
-  build:
-    - patch  # [not win]
-    - m2-patch  # [win]
   host:
     - pip
     - python
-    - setuptools
+    - setuptools >=61.0
     - setuptools_scm
-    - wheel
   run:
     - python
-
-# duckdb >=0.6 * does not exist (perhaps a typo or a missing channel).
-{% set ignore_tests = " --ignore=tests/test_optimizer.py" %}
-{% set ignore_tests = ignore_tests + " --ignore=tests/test_executor.py" %}
+  run_constrained:
+    - sqlglotrs ==0.7.3
 
 test:
   source_files:
     - tests
   imports:
     - sqlglot
+    - sqlglot._typing
+    - sqlglot._version
+    - sqlglot.dialects
+    - sqlglot.diff
+    - sqlglot.errors
+    - sqlglot.executor
+    - sqlglot.expressions
+    - sqlglot.generator
+    - sqlglot.helper
+    - sqlglot.jsonpath
+    - sqlglot.lineage
+    - sqlglot.optimizer
+    - sqlglot.parser
+    - sqlglot.planner
+    - sqlglot.schema
+    - sqlglot.serde
+    - sqlglot.time
+    - sqlglot.tokens
+    - sqlglot.transforms
+    - sqlglot.trie
   commands:
     - pip check
-    - pytest -v {{ ignore_tests }} tests
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -ra -vv {{ ignore_tests }} tests
   requires:
     - pip
     - pytest
     - pytz
 
 about:
-  home: https://github.com/tobymao/sqlglot
+  home: https://sqlglot.com
   summary: An easily customizable SQL parser and transpiler
   description: |
     SQLGlot is a no-dependency SQL parser, transpiler, optimizer, and engine. It can be used
@@ -59,9 +73,9 @@ about:
   license_family: MIT
   license_file:
     - LICENSE
-    - tests/fixtures/jsonpath/LICENSE # BSD-2-Clause
+    - tests/fixtures/jsonpath/LICENSE  # BSD-2-Clause
   dev_url: https://github.com/tobymao/sqlglot
-  doc_url: https://github.com/tobymao/sqlglot/blob/main/README.md
+  doc_url: https://sqlglot.com/sqlglot.html
 
 extra:
   recipe-maintainers:
