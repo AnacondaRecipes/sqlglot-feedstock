@@ -8,10 +8,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/sqlglot-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 2270899694663acef94fa93497971837e6fadd712f4a98b32aee1e980bc82722
-  patches:
-    - patches/0001-Fix-use-utf-8-encoding-in-open-calls-fixes-4676.patch
 
 build:
   number: 0
@@ -19,15 +17,11 @@ build:
   skip: true  # [py<39]
 
 requirements:
-  build:
-    - patch  # [not win]
-    - m2-patch  # [win]
   host:
     - pip
     - python
     - setuptools >=61.0
     - setuptools_scm
-    - setuptools-scm
   run:
     - python
   run_constrained:
@@ -41,6 +35,7 @@ test:
     - sqlglot
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - pytest -v {{ ignore_tests }} tests
   requires:
     - pip
@@ -48,7 +43,7 @@ test:
     - pytz
 
 about:
-  home: https://github.com/tobymao/sqlglot
+  home: https://sqlglot.com
   summary: An easily customizable SQL parser and transpiler
   description: |
     SQLGlot is a no-dependency SQL parser, transpiler, optimizer, and engine. It can be used
@@ -61,7 +56,7 @@ about:
     - LICENSE
     - tests/fixtures/jsonpath/LICENSE  # BSD-2-Clause
   dev_url: https://github.com/tobymao/sqlglot
-  doc_url: https://github.com/tobymao/sqlglot/blob/main/README.md
+  doc_url: https://sqlglot.com/sqlglot.html
 
 extra:
   recipe-maintainers:
