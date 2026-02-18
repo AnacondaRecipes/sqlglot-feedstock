@@ -1,5 +1,5 @@
 {% set name = "sqlglot" %}
-{% set version = "27.29.0" %}
+{% set version = "28.10.1" %}
 {% set ignore_tests = " --ignore=tests/test_optimizer.py" %}
 {% set ignore_tests = ignore_tests + " --ignore=tests/test_executor.py" %}
 
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 2270899694663acef94fa93497971837e6fadd712f4a98b32aee1e980bc82722
+  sha256: 66e0dae43b4bce23314b80e9aef41b8c88fea0e17ada62de095b45262084a8c5
 
 build:
   number: 0
@@ -22,10 +22,11 @@ requirements:
     - python
     - setuptools >=61.0
     - setuptools_scm
+    - setuptools-scm
   run:
     - python
   run_constrained:
-    - sqlglotrs ==0.7.3
+    - sqlglotrs ==0.12.0
 
 test:
   source_files:
