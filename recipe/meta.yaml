@@ -1,10 +1,8 @@
 {% set name = "sqlglot" %}
-{% set version = "28.10.1" %}
-{% set ignore_tests = " --ignore=tests/test_optimizer.py" %}
-{% set ignore_tests = ignore_tests + " --ignore=tests/test_executor.py" %}
+{% set version = "30.11.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -25,8 +23,13 @@ requirements:
   run:
     - python
   run_constrained:
-    - sqlglotrs ==0.12.0
+    # c
+    - sqlglotc ==30.11.0  # [py>=310]
+    # rs
+    - sqlglotrs ==0.12.0  # [py>=310]
 
+{% set ignore_tests = " --ignore=tests/test_optimizer.py" %}
+{% set ignore_tests = ignore_tests + " --ignore=tests/test_executor.py" %}
 test:
   source_files:
     - tests
