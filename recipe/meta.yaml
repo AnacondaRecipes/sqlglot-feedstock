@@ -1,5 +1,5 @@
 {% set name = "sqlglot" %}
-{% set version = "30.11.0" %}
+{% set version = "30.17.0" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 1a23c6e2adb41da61fda46b1848d2fa26341d447fc0f0cd5ca21160362100991
+  sha256: 2d6b8def93304fa300f4d20f48e3909e7f436fda56ca1fafd8975f6c561ef62c
 
 build:
   number: 0
@@ -24,9 +24,9 @@ requirements:
     - python
   run_constrained:
     # c
-    - sqlglotc ==30.11.0  # [py>=310]
+    - sqlglotc =={{ version }}  # [py>=310]
     # rs
-    - sqlglotrs ==0.12.0  # [py>=310]
+    - sqlglotrs ==0.13.0  # [py>=310]
 
 {% set ignore_tests = " --ignore=tests/test_optimizer.py" %}
 {% set ignore_tests = ignore_tests + " --ignore=tests/test_executor.py" %}
